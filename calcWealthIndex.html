@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="Description" content="Wealth Index Calculator">
+<meta name="Keywords" content="Wealth Index Calculator Stanley Danko Millionaire Next Door">
+<title> Wealth Index Calculator - Misc Calcs</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+	integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="sidemenu.css">
+<script src="sidemenu.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+	<div id="layout">
+		<!-- Menu toggle -->
+		<a href="#menu" id="menuLink" class="menu-link">
+			<!-- Hamburger icon -->
+			<span></span>
+		</a>
+
+		<div id="menu">
+			<div class="pure-menu">
+				<a class="pure-menu-heading" href="index.html">Misc Calcs</a>
+
+				<ul class="pure-menu-list">
+					<li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Calculators</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<div class="header">
+			<h1>Wealth Index Calculator</h1>
+			<p> Given your age and income, are you rich? </p>
+		</div>
+		<div class="main">
+			<div class="content">
+				<div class="pure-form pure-form-aligned">
+					<fieldset class="pure-group">
+						<input type="number" class="pure-input-1-2" id="txtAge" placeholder="Age of household head"
+							min="18" required />
+						<input type="number" class="pure-input-1-2" id="txtIncome" placeholder="Annual household income"
+							min="1" required />
+						<input type="number" class="pure-input-1-2" id="txtNetworth" placeholder="Household net worth"
+							min="1" required />
+					</fieldset>
+					<button id="btnCalc" class="pure-button pure-input-1-2 pure-button-primary"
+						disabled>Calculate</button>
+				</div>
+			</div>
+			<div id="divResult" class="content">
+				<h2>Results</h2>
+				<p>
+					Your Wealth Index (WX) is <strong><span id="txtWX"></span></strong>, indicating that you are
+					<strong><span id="txtAW"></span></strong>.
+				</p>
+				<div class="pure-form pure-form-aligned">
+					<label for="mtrWX">WX: </label>
+					<meter id="mtrWX" min="0" max="2.5" low="0.88" high="1.84" optimum="1" value="0.5">0.66</meter>
+				</div>
+
+				<form class="pure-form pure-form-aligned">
+					<button id="btnReset" class="pure-button pure-input-1-2 pure-button-primary">Reset</button>
+				</form>
+			</div>
+			<div class="content">
+				<h2>Notes</h2>
+				<p>
+					Are you a stronger earner or saver? Are you balance sheet affluent or income statement affluent?
+				</p>
+				<p>
+					The answer is as always, "it depends". In '<a href="https://themillionairenextdoor.com/">The Millionaire Next
+						Door</a>' Drs. Stanley and Danko analysed a bunch of millionaires (in 1998 when being one was a much
+					bigger deal) and formulated a way to see if you had exceptional wealth:
+				</p>
+				<p>
+				<pre>Wealth Index = (Net Worth) ÷ (Age * Income) * 10</pre>
+				</p>
+				<p>					
+					<aside>The lower threshhold of WX for being a Prodigious Accumulator of Wealth (PAW) is <strong>1.84</strong> and the upper threshhold of
+						WX for being an Under-Accumulator of Wealth (UAW) is <strong>0.88</strong>. If you are between you are painstakingly
+						"<strong>Average</strong>". </aside>
+					</p>
+				<p>This is not the first Wealth Index calculator on the internet, but it is the only one as far as I know that does
+					the calculation client-side; without sending your information to a remote computer.</p>
+				<p>The formula has its caveats. It often misclassifies younger folk who may have landed a decent job but not had
+					time to save. More broadly, as life is lumpy it falls apart during sudden reversals of fortune. So treat it as
+					an entertaining curiousity and remember that when trying to work out if you're wealthy ...</p>
+				<p>... it depends.</p>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+	function calcWX(age, income, networth) {
+		return (networth / (age * income * 0.1));
+	}
+
+	function toggleBtnCalc() {
+		//if Age, Income, or Wealth fields are empty, disable Calc button.
+		if ($("#txtAge").val().length == 0 || $("#txtIncome").val().length == 0 || $("#txtNetworth").val().length == 0) {
+			$("#btnCalc").attr("disabled", true);
+		}
+		else {
+			$("#btnCalc").attr("disabled", false);
+		}
+	}
+
+	function showResult() {
+		var age = $("#txtAge").val();
+		var income = $("#txtIncome").val();
+		var networth = $("#txtNetworth").val();
+		var WX = calcWX(age, income, networth);
+		$("#txtWX").text(WX.toFixed(2));
+		$("#txtAW").text(
+			function () {
+				switch (true) {
+					case (WX > 1.84):
+						return "a Prodigious Accumulator of Wealth (PAW)";
+					case (WX < 0.88):
+						return "an Under-Accumulator of Wealth (UAW)";
+					default:
+						return "an Average Accumulator of Wealth (AAW)";
+				}
+			});
+		$("#mtrWX").val(WX);
+		$("#mtrWX").text(WX.toFixed(2));
+		//finally, show the Results
+		$("#divResult").show();
+	}
+
+	$(document).ready(function () {
+		$("#divResult").hide();
+		$("#txtAge").keyup(function () {
+			toggleBtnCalc();
+		});
+		$("#txtIncome").keyup(function () {
+			toggleBtnCalc();
+		});
+		$("#txtNetworth").keyup(function () {
+			toggleBtnCalc();
+		});
+
+		$("#btnCalc").click(function () {
+			showResult();
+		});
+	});
+	/*
+	https://www.hughcalc.org/wealth.cgi
+	https://globalrph.com/medcalcs/wealth-calculator/
+	https://www.shortform.com/blog/millionaire-next-door-formula/
+	https://purecss.io/forms/
+	*/
+</script>
+
+</html>

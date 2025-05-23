@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="Description" content="Leveraged Return Calculator">
+<meta name="Keywords" content="Leverage Return Borrowing Investing Calculator">
+<title> Leveraged Return Calculator - Misc Calcs</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+	integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="sidemenu.css">
+<script src="sidemenu.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+	<div id="layout">
+		<!-- Menu toggle -->
+		<a href="#menu" id="menuLink" class="menu-link">
+			<!-- Hamburger icon -->
+			<span></span>
+		</a>
+
+		<div id="menu">
+			<div class="pure-menu">
+				<a class="pure-menu-heading" href="index.html">Misc Calcs</a>
+
+				<ul class="pure-menu-list">
+					<li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Calculators</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<div class="header">
+			<h1>Leveraged Return Calculator</h1>
+			<p> Borrow money to make money. What could <em>possibly</em> go wrong?</p>
+		</div>
+		<div class="main">
+			<div class="content">
+				<div class="pure-form pure-form-aligned">
+					<fieldset>
+						<legend>Total Investment</legend>
+						<div class="pure-control-group">
+							<label for="txtInvestment">$</label>
+							<input type="number" id="txtInvestment" min="1" value="100000" required />
+							<span class="pure-form-message-inline">(equity + debt)</span>
+						</div>
+						<legend>Leverage</legend>
+						<div class="pure-control-group">
+							<label for="rngLoanSize">Loan Size</label>
+							<input type="range" id="rngLoanSize" min="1" max="99" value="80"/>
+							<span class="pure-form-message-inline">(Debt: <span id="txtLoanPercent">80</span>%, $<span id="txtLoanSize">80000</span>. Equity: $<span id="txtEquity">20000</span>)</span>)</span>
+						</div>
+						<legend>Interest & Returns</legend>
+						<div class="pure-control-group">
+							<label for="txtInterest">Loan Interest</label>
+							<input type="number" id="txtInterest" min="1" value="5" step="any" required />
+							<span class="pure-form-message-inline">%</span>
+						</div>
+						<div class="pure-control-group">
+							<label for="txtReturns">Raw Investment Returns</label>
+							<input type="number" id="txtReturns" min="1" value="4.5" step="any" required />
+							<span class="pure-form-message-inline">% (Yield + Gain - Non-Interest Costs)</span>
+						</div>
+						<legend>Leveraged Returns</legend>
+						<div class="pure-control-group">
+							<label for="txtLeveragedReturns">$</label>
+							<input type="text" class="pure-input-rounded" id="txtLeveragedReturns" readonly="" value="2500.00" />
+							<span class="pure-form-message-inline">(<span id="txtLeveragedReturnsPercent">2.50</span>%, or <span id="txtOutperformance">-2.00</span>% out-performance)</span>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+
+			<div class="content">
+				<h2>Notes</h2>
+				<p>
+					To optimists and go-getters, leverage, debt, or borrowing sends your profits to the moon.
+				</p>
+				<p>To gloomy pessimists, it deepens your losses.</p>
+				<p>Both are correct. In fact, leverage amplifies the difference between your gains and the interest payable. The formula is as follows:</p>
+				<pre>Leveraged Returns = (Asset Rate of Return - Loan Interest Rate) × (debt ÷ equity) + Asset Rate of Return</pre>	
+				<p>This introduces a third scenario. As illustrated by the default settings, leverage can drag upon decent returns such that despite profiting you would have been better off without borrowing.</p>
+				<p>But mediocrity does not fit dinner-party binaries of financial triumph or defeat, so...</p>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+	function validateNumbers(array) {
+		if (!Array.isArray(array)) {
+			return false; // Input is not an array
+		}
+		for (let i = 0; i < array.length; i++) {
+			const num = array[i];
+			if (typeof num !== 'number' || isNaN(num)) {
+				return false; // Number is not valid or less than or equal to zero
+			}
+		}
+		return true; // All numbers are valid and greater than zero
+	}
+
+	function calcLeveragedReturns (debt, equity, interest, returns) {
+		if (validateNumbers([debt,equity,interest,returns])) {
+			var LeveragedReturns = ((debt / equity * (returns - interest)) + returns); 
+			if (validateNumbers([LeveragedReturns])) {
+				return LeveragedReturns;
+			}
+		} else {
+			return ("...");
+		}
+	}
+
+	function showLeveragedReturns () {
+		var debtPct = parseFloat($('#rngLoanSize').val());
+		var equityPct = 100 - debtPct;
+		var equityAmt = $('#txtInvestment').val()*(equityPct/100);
+		var interest = $('#txtInterest').val() / 100;
+		var returns = $('#txtReturns').val() / 100;
+		var leveragedReturns = calcLeveragedReturns(debtPct, equityPct, interest, returns);
+		var outperformance = leveragedReturns - returns;
+		$('#txtLeveragedReturns').val((leveragedReturns*equityAmt).toFixed(2));
+		$('#txtLeveragedReturnsPercent').text((leveragedReturns*100).toFixed(2));
+		$('#txtOutperformance').text((outperformance*100).toFixed(2));
+	}
+
+	function showLoanSize() {
+		//update loan dollar size, equity amount
+		$('#txtLoanSize').text(($('#rngLoanSize').val() / 100 * $('#txtInvestment').val()).toFixed(0));
+		$('#txtEquity').text(($('#txtInvestment').val() - $('#txtLoanSize').text()).toFixed(0));
+	}
+
+	$(document).ready(function () {
+		$("#txtInvestment").on({
+			keyup: function () {
+				showLoanSize();
+				showLeveragedReturns();
+			},
+		}),
+		$('#rngLoanSize').change(function () {
+			$('#txtLoanPercent').text($('#rngLoanSize').val());
+			showLoanSize();
+			showLeveragedReturns();
+		}),
+		$("#txtInterest").on({
+			keyup: function () {
+				showLeveragedReturns();
+			},
+		}),
+		$("#txtReturns").on({
+			keyup: function () {
+				showLeveragedReturns();
+			},
+		});
+	});
+	/*
+Return Equity = Interest Rate Differential x Debt to Equity Ratio + Asset Return.
+
+https://dtcwee.blogspot.com/2016/12/the-art-of-leverage.html
+	*/
+</script>
+
+</html>

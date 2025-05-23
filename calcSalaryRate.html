@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="Description" content="Salary - Rate Calculator">
+  <meta name="Keywords" content="Salary - Rate Calculator">
+  <title>Salary - Rate - Misc Calcs</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+    integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="sidemenu.css">
+  <script src="sidemenu.js"></script>
+  <style>
+    .required {
+      background-color: lightcyan;
+    }
+
+    .optional {
+      background-color: mistyrose;
+    }
+
+    .calculated {
+      background-color: lightyellow;
+    }
+
+    input[type=number] {
+      width: 120px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="layout">
+    <!-- Menu toggle -->
+    <a href="#menu" id="menuLink" class="menu-link">
+      <!-- Hamburger icon -->
+      <span></span>
+    </a>
+    <div id="menu">
+      <div class="pure-menu">
+        <a class="pure-menu-heading" href="index.html">Misc Calcs</a>
+
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Calculators</a></li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="header">
+      <H1> Salary to Contract Rate Calculator </H1>
+      <p> Get your rate on. </p>
+    </div>
+    <div class="main">
+      <div class="content">
+
+        <form action='' name="salaryrate" class="pure-form">
+          <fieldset>
+            <table border="1">
+              <tr>
+                <th>Salary (annual)</th>
+                <th>Leave (annual)</th>
+                <th>Benefits (annual)</th>
+                <th>Contract</th>
+              </tr>
+              <tr>
+                <td class="required"><label for="basesalary">Base Salary $</label>
+                  <input type="number" name="basesalary" size="10" value="45000" required>
+                </td>
+                <td class="required"><label for="sickleave">Sick Leave days</label>
+                  <input type="number" name="sickleave" size="4" value="10" required>
+                </td>
+                <td class="required"><label for="leaveloading">Leave Loading</label>
+                  <input type="number" name="leaveloading" size="4" value="17.5" required> %
+                </td>
+                <td class="calculated"><label for="leaveloadingval">Leave Loading Value $</label>
+                  <input type="number" name="leaveloadingval" size="10" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td class="required"><label for="workdays">Workdays/shifts per week</label>
+                  <input type="number" name="workdays" size="4" value="5" required>
+                </td>
+                <td class="required"><label for="recleave">Recreation Leave days</label>
+                  <input type="number" name="recleave" size="4" value="20" required>
+                </td>
+                <td class="required"><label for="superannuation">Superannuation (employer contribution)</label>
+                  <input type="number" name="superannuation" size="4" value="10.5" required>%
+                </td>
+                <td class="calculated"><label for="superannuationval">Superannuation Value $</label>
+                  <input type="number" name="superannuationval" size="10" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td>52 weeks/year</td>
+                <td class="required"><label for="longserviceleave">Long Service Leave days</label>
+                  <input type="number" name="longserviceleave" size="4" value="5" required>
+                </td>
+                <td class="required"><label for="benefits">Other (Car / Medical / Dental) $</label>
+                  <input type="number" name="benefits" size="10" value="0" required>
+                </td>
+                <td class="calculated"><label for="benefitstotal">Total Benefits $</label>
+                  <input type="number" name="benefitstotal" size="10" readonly>
+                </td>
+              </tr>
+              <tr>
+                <td class="required"><label for="hoursperday"> hours per day/shift</label><input type="number"
+                    name="hoursperday" size="4" value="7.5" required></td>
+                <td class="required"><label for="publicholidays">Public Holidays</label>
+                  <input type="number" name="publicholidays" size="4" value="11" required>
+                </td>
+                <td><input type="button" class="pure-button pure-button-primary" value="Salary to Rate &rarr;"
+                    name="salarytorate" onClick="salarytorate_display()"></td>
+                <td class="optional"><label for="rate">Contract Rate per hour $</label>
+                  <input type="number" name="rate" size="5" value="33">
+                </td>
+              </tr>
+              <tr>
+                <td><input type="reset" class="pure-button" value="Reset" name="Reset"></td>
+                <td class="calculated"><label for="totalleave">Total Leave days</label>
+                  <input type="number" name="totalleave" size="4" readonly>
+                </td>
+                <td class="calculated"><label for="netsalary">Gross Salary $</label>
+                  <input type="number" name="netsalary" size="10" readonly>
+                </td>
+                <td><input type="button" class="pure-button pure-button-primary" value="&larr; Rate to Salary"
+                    name="ratetosalary" onClick="ratetosalary_display()"></td>
+              </tr>
+            </table>
+          </fieldset>
+        </form>
+        <h2> <a name="How to Use"></a> How to Use </h2>
+        <ol>
+          <li>Calculate an equivalent <span class="optional"> contract
+              rate</span>: Enter your <span class="required">salary</span>,
+            <span class="required">leave</span>, and <span class="required">
+
+              benefits</span> conditions and press '<b>Salary to Rate</b>'.
+          </li>
+          <li>Calculate an equivalent (base) <span class="required">salary</span>:
+            Enter your <span class="optional">contract rate</span>, potential
+            <span class="required">benefits</span>, and potential <span class="required">
+
+              leave</span> conditions. Press '<b>Rate to Salary</b>'.
+          </li>
+          <li>If you stuff up, press '<b>Reset</b>'.</li>
+        </ol>
+        <h3>Legend</h3>
+        <table border="1">
+          <tr>
+            <td width=15% class="required"></td>
+            <td>Required (Salary conditions)</td>
+          </tr>
+          <tr>
+            <td width=15% class="optional">&nbsp;</td>
+            <td>Optional (Contract conditions)</td>
+          </tr>
+          <tr>
+            <td width=15% class="calculated">&nbsp;</td>
+            <td>Leave blank (Calculated fields)</td>
+          </tr>
+        </table>
+        <hr>
+        <h2>Glossary </h2>
+        <ul>
+          <li><b>Base Salary</b>: Your salary, excluding any benefits.</li>
+          <li><b>Benefits</b>: Money or other benefits from your employer in addition to
+            your base salary. (eg Cars, Medical/Dental coverage.) Separated here into
+            Superannuation, Leave Loading, and Other.</li>
+          <li><b>Gross Salary</b>: Base Salary + Benefits.</li>
+          <li><b>Leave Loading</b>: after the Labour Revolution, extra money was given
+            during leave to compensate for loss of overtime, or shift work at penalty
+            rates.</li>
+          <li><b>Superannuation</b>: A form of forced savings contributed to by your employer, most
+            often untouchable before retirement. Equivalent to a US 401(k) or a Singapore CPF. Sometimes the salary
+            offered <i>includes</i>
+            this contribution, sometimes <i>not</i>. Make sure you clarify as the amount
+            can be quite sizable. I've been caught out, and it's not a pleasant feeling.</li>
+        </ul>
+        <hr>
+        <h2>About</h2>
+        <p> Remuneration ain't remuneration. Calculating how much you are really getting
+          paid is simple, but involved. Converting that to an hourly rate - in case you
+          were thinking of going contracting - is similarly straightforward, but full of
+          traps. Enter this handy calculator, which I hope helps you sort things out
+          whether you are full-time, part-time, overseas, pondering that job offer, or
+          contracting-looking-to-get-salaried.&nbsp; </p>
+        <p> The presets are based on South Australian Government conditions. Note that
+          the employer's superannuation contribution is NOT included as base salary. Nor
+          should it be, in my opinion, because employer contributions are supposed to
+          increase if you make voluntary contributions to superannuation. By 'packaging'
+          your salary and superannuation, you are forced to pay for extra employer
+          contributions as well as your own. </p>
+        <p>Tax is a can of worms which I will not open right now. The difficulty lies
+          both in introducing another dimension of calculation, as well as defining what
+          benefits are taxable and what aren't. For example: in Australia superannuation
+          is not taxable, while leave loading is. Benefits like cars and conferences may
+          attract 'Fringe Benefits Tax'. This mess is definitely one for the 'too hard'
+          basket.</p>
+        <p>The rate to salary calculation involves a recursive binary chop goal-seek
+          algorithm which I am quite proud of.</p>
+        <p>9 December 2003</p>
+        <hr>
+        <p>15 February 2012 - Removed FrontPage tags. Corrected default long service leave to 5 work days. Added
+          variable hours per day/shift on advice of Mr K. Bettridge esq.
+
+      </div>
+    </div>
+  </div>
+</body>
+<script language=javascript>
+  /*--------------------------Totalleave------------------------*/
+  function totalleave_calc(
+    recleave,
+    sickleave,
+    publicholidays,
+    longserviceleave) {
+    return (++recleave + --sickleave + ++publicholidays + --longserviceleave);
+  }
+
+  function totalleave_display() {
+    document.salaryrate.totalleave.value =
+      totalleave_calc(document.salaryrate.recleave.value,
+        document.salaryrate.sickleave.value,
+        document.salaryrate.publicholidays.value,
+        document.salaryrate.longserviceleave.value);
+  }
+
+  /*--------------------------Leaveloading------------------------*/
+  function leaveloadingval_calc(basesalary, workdays, recleave, leaveloading) {
+    return ((basesalary / (workdays * 52)) * recleave * (leaveloading / 100)).toFixed(2);
+  }
+
+  function leaveloadingval_display() {
+    document.salaryrate.leaveloadingval.value =
+      leaveloadingval_calc(
+        document.salaryrate.basesalary.value,
+        document.salaryrate.workdays.value,
+        document.salaryrate.recleave.value,
+        document.salaryrate.leaveloading.value);
+  }
+
+  /*--------------------------Superannuation------------------------*/
+  function superannuationval_calc(basesalary, superannuation) {
+    return (basesalary * superannuation / 100).toFixed(2);
+  }
+
+  function superannuationval_display() {
+    document.salaryrate.superannuationval.value =
+      superannuationval_calc(document.salaryrate.basesalary.value,
+        document.salaryrate.superannuation.value);
+  }
+
+  /*--------------------------Benefitstotal------------------------*/
+  function benefitstotal_calc(leaveloading_val, superannuation_val, benefits) {
+    return (leaveloading_val * 1.0 + superannuation_val * 1.0 + benefits * 1.0).toFixed(2);
+  }
+
+  function benefitstotal_display() {
+    leaveloadingval_display();
+    superannuationval_display();
+
+    document.salaryrate.benefitstotal.value =
+      benefitstotal_calc(
+        document.salaryrate.leaveloadingval.value,
+        document.salaryrate.superannuationval.value,
+        document.salaryrate.benefits.value);
+
+    document.salaryrate.netsalary.value =
+      (document.salaryrate.benefitstotal.value * 1.0 +
+        document.salaryrate.basesalary.value * 1.0).toFixed(2);
+  }
+
+  /*--------------------------salarytorate------------------------*/
+  function salarytorate_calc(netsalary, hoursperday, workdays, totalleave) {
+    return (netsalary / ((workdays * 52) - totalleave) / hoursperday).toFixed(2);
+  }
+
+  function salarytorate_display() {
+    totalleave_display();
+    benefitstotal_display();
+
+    document.salaryrate.rate.value =
+      salarytorate_calc(
+        document.salaryrate.netsalary.value,
+        document.salaryrate.hoursperday.value,
+        document.salaryrate.workdays.value,
+        document.salaryrate.totalleave.value);
+  }
+
+  /*--------------------------ratetosalary------------------------*/
+  function ratetosalary_calc(rate, hoursperday, workdays, totalleave) {
+    return (rate * hoursperday * (workdays * 52 - totalleave)).toFixed(2);
+  }
+
+  function ratetosalary_display() {
+
+    totalleave_display();
+    benefitstotal_display();
+
+    var ratetosalarydifference = (document.salaryrate.netsalary.value -
+      ratetosalary_calc(
+        document.salaryrate.rate.value,
+        document.salaryrate.hoursperday.value,
+        document.salaryrate.workdays.value,
+        document.salaryrate.totalleave.value)
+    );
+
+    if (ratetosalarydifference > 1) {
+      document.salaryrate.basesalary.value = (document.salaryrate.basesalary.value * 1.0 - ratetosalarydifference / 2).toFixed(2);
+      totalleave_display();
+      benefitstotal_display();
+      ratetosalary_display();
+    }
+
+    if (ratetosalarydifference < -1) {
+      document.salaryrate.basesalary.value = (document.salaryrate.basesalary.value * 1.0 - ratetosalarydifference / 2).toFixed(2);
+      totalleave_display();
+      benefitstotal_display();
+      ratetosalary_display();
+    }
+  }
+
+</script>
+
+</html>

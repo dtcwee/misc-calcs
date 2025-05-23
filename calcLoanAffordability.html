@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="Description" content="Loan Affordability Calculator">
+	<meta name="Keywords" content="Loan Affordability Calculator">
+	<title>Loan Affordability Calculator - Misc Calcs</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+		integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="sidemenu.css">
+	<script src="sidemenu.js"></script>
+</head>
+
+<body>
+	<div id="layout">
+		<!-- Menu toggle -->
+		<a href="#menu" id="menuLink" class="menu-link">
+			<!-- Hamburger icon -->
+			<span></span>
+		</a>
+
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="index.html">Misc Calcs</a>
+
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Calculators</a></li>
+
+                </ul>
+            </div>
+        </div>
+		<div class="header">
+			<h1> Loan Affordability Calculator </h1>
+			<p> Short a quid, Guv? How much can you borrow without getting kneecapped? </P>
+		</div>
+		<div class="main">
+			<div class="content">
+
+				<form name="LAC" class="pure-form pure-form-aligned">
+					<fieldset>
+						<div class="pure-control-group"><label for="Salary">Gross Salary ($pa) </label><input
+								type="number" name="Salary" step="0.01" size="10" value="50000"></div>
+						<div class="pure-control-group"><label for="Rate">Interest Rate (%pa) </label><input
+								type="number" name="Rate" step="0.01" size="5" value="7"></div>
+						<div class="pure-control-group"><label for="Period">Term (Years) </label><input type="number"
+								name="Period" size="2" value="30"></div>
+						<div class="pure-control-group"><label for="TI">Monthly Taxes/Rates, Insurance ($)
+							</label><input type="number" name="TI" size="10" value="50"></div>
+						<div class="pure-control-group"><label for="Debt">Other monthly debt repayments ($)
+							</label><input type="number" name="Debt" size="10" value="10"></div>
+						<input type="reset" class="pure-button" value="Reset" name="Reset">
+						<input type="button" class="pure-button pure-button-primary" value="Calculate" name="Calculate"
+							onClick=main();>
+						<hr>
+						<div class="pure-control-group"><label for="targetMPMT">Maximum Affordable Monthly Payment ($)
+							</label><input type="number" name="targetMPMT" size="10" readonly><span
+								class="pure-form-message-inline">
+								(as per the 28/36 rule below.)</span></div>
+						<div class="pure-control-group"><label for="targetAmount">Maximum Affordable Loan Amount ($)
+							</label><input type="number" name="targetAmount" size="10" readonly></div>
+
+					</fieldset>
+				</form>
+				<h2>The 28/36 Rule</h2>
+				<p>PITI is an acronym for the expenses accompanying a property. They stand for:</p>
+				<p>P = Principal. The portion of your loan repayments that go to the principal
+					amount you borrowed.</p>
+				<p>I = Interest. The portion of your loan repayments that go to interest.</p>
+				<p>T = Taxes, rates or levies imposed by government bodies. e.g. Council Rates,
+					State Taxes, Land Tax.</p>
+				<p>I = Insurance. The cost of insuring your property.</p>
+				<p>P + I + T + I = PITI.</p>
+				<p>For a loan to be considered affordable, monthly PITI on any one property must be
+					less than 28% of your monthly gross salary. ('Gross' meaning 'pre-tax', not
+					'massive',
+					unfortunately.)</p>
+				<p>Furthermore, monthly PITI combined with other monthly debt payments should be
+					less than 36% of your monthly gross salary. </p>
+				<p>28%, 36% gives us the 28/36 rule that banks use to work out if you can afford the
+					loan you are applying for. Centuries of lending has taught banks that anything
+					on the wrong side of these magic numbers has a far greater chance of becoming a
+					bad loan. If they turn you down, it's for a good reason. Ignore them at your peril! </p>
+				<h3>&quot;But I went to ACME Bank...&quot; </h3>
+				<p>&quot; ... and they said I could have more!&quot; </p>
+				<p>Banks don't have to use the 28/36 rule. In fact, it's very tempting for them
+					to lend greater amounts that take you longer to repay because they will collect
+					more interest. But the more they lend, the greater the risk you cannot repay. It
+					depends on how much they're willing to gamble. </p>
+				<p>If you look hard enough you will find a lender for any set of circumstances.
+					But if the conservative banks won't touch you then your choice may be restricted
+					to lenders on the 'fringe' - including boutique banks - that make you pay for
+					their risk in the form of higher interest, fees, or reduced facilities. </p>
+				<p>Or you could be right. This maths could be pure bollocks. It just doesn't
+					take into account that your ship's about to come in. If the banks are too
+					short-sighted, go see 'Arry round the front bar of the Winchester. Tell 'im I
+					sent ya. </p>
+				<p>Oh, and mind your knees and elbows. </p>
+
+			</div>
+		</div>
+	</div>
+</body>
+<script language="Javascript">
+	function MPMT(amount, rate, period)
+	/*returns monthly loan repayments given principal amount, annual interest rate, and period in years */ {
+		var mi = rate / 1200;
+		var base = 1;
+		var mbase = 1 + mi;
+		for (i = 0; i < period * 12; i++) {
+			base = base * mbase
+		}
+		//return floor(amount * mi / ( 1 - (1/base)));
+		return (amount * mi / (1 - (1 / base))).toFixed(2);
+	}
+
+	function calctargetAmount(targetMPMT, initAmount, rate, period)
+	/*Returns a loan amount based on a desired montly payment*/ {
+		var tempMPMT = MPMT(initAmount, rate, period);
+		var MPMTdiff = targetMPMT - tempMPMT;
+		if (MPMTdiff > 1) {
+			/*increase the initAmount by the same proportion as the monthly payment differs from target monthly payment*/
+			return calctargetAmount(targetMPMT, initAmount * (1 + (MPMTdiff / targetMPMT)), rate, period);
+		}
+		else if (MPMTdiff < -1) {
+			/*decrease the initAmount by the same proportion as the monthly payment differs from target monthly payment*/
+			return calctargetAmount(targetMPMT, initAmount * (1 + (MPMTdiff / targetMPMT)), rate, period);
+		}
+		return initAmount.toFixed(2);
+	}
+
+	function main() {
+		var twentyEight = (document.LAC.Salary.value / 12 * 0.28) - document.LAC.TI.value;
+		var thirtySix = (document.LAC.Salary.value / 12 * 0.36) - document.LAC.Debt.value;
+
+		document.LAC.targetMPMT.value = Math.min(twentyEight, thirtySix).toFixed(2);
+		document.LAC.targetAmount.value = calctargetAmount(
+			document.LAC.targetMPMT.value,
+			(document.LAC.Salary.value * document.LAC.Period.value / 10), //Init to sensible value.
+			document.LAC.Rate.value,
+			document.LAC.Period.value);
+	}
+</script>
+
+</html>

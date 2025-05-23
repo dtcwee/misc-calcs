@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="Description" content="Wage Dilution Calculator">
+    <meta name="Keywords" content="Wage Dilution Calculator">
+    <title>Wage Dilution - Misc Calcs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+        integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="sidemenu.css">
+    <script src="sidemenu.js"></script>
+
+</head>
+
+<body>
+    <div id="layout">
+        <!-- Menu toggle -->
+        <a href="#menu" id="menuLink" class="menu-link">
+            <!-- Hamburger icon -->
+            <span></span>
+        </a>
+
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="index.html">Misc Calcs</a>
+
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Calculators</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="header">
+            <h1>
+                Wage Dilution Calculator
+            </h1>
+            <p>
+                Double your pay by halving your work.
+            </p>
+        </div>
+        <div class="main">
+            <div class="content">
+
+                <form method="POST" name="RateDilution" onSubmit="Display()" class="pure-form">
+                    <table class="pure-table">
+                        <tr>
+                            <td width="50%" valign="top">
+                                <h3>Input</h3>
+                                <p>Your salary:<br>
+                                    <input type="number" name="Salary" size="10" value="45000"> per year/hour
+                                </p>
+                                <p>Hours you are <i><b> supposed</b></i> to work per week:<br>
+                                    <input type="number" name="ExpectedHours" size="10" value="37.5">
+                                </p>
+                                <p>Hours you <i><b> actually</b></i> work per week:<br>
+                                    <input type="number" name="ActualHours" size="10" value="40">
+                                </p>
+                            </td>
+                            <td width="50%" valign="top">
+                                <h3>Results</h3>
+                                <p>Your diluted salary:<br>
+                                    <input type="number" name="DilutedSalary" size="10" value="42187.5" readonly>
+                                    per year/hour
+                                </p>
+                                <p>Dilution:<br>
+                                    <input type="number" name="Dilution" size="10" value="0.9375" readonly>
+                                </p>
+                                <p><input type="button" class="pure-button pure-button-primary" value="Calculate"
+                                        name="Calculate" onClick="Display()"><input type="reset" class="pure-button"
+                                        value="Reset" name="B2"></p>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+                <h2>About</h2>
+                <p>Time is money. Your money. You protect your money, but what about your time?
+                    Using the calculator is fairly straightforward. Fill in the fields in the input
+                    column and press 'calculate'.</p>
+                <p>Working longer hours on a fixed salary not only reduces your quality of life,
+                    it also lowers your rate of pay. Unpaid overtime can dilute your pay by a
+                    significant amount. On the other hand, working less hours than your job
+                    specifies - (which I do <i>not</i> advocate) - can potentially increase your
+                    rate. Contrary to the stereotype of the Australian slacker, under-work doesn't
+                    seem to be a problem these days.</p>
+                <p>There is increasing pressure on workers to perform 'unpaid overtime'. I find
+                    this disturbing. Free work should be free choice, not obligatory, and those who
+                    offer their work without compensation should inform themselves about how much
+                    they are selling themselves short.</p>
+                <p>Similarly, I don't believe in grossly overstating your work hours. What you
+                    gain in money and time, you lose in credibility. A happy medium between
+                    over-work and under-work needs to be struck.</p>
+                <p>Most jobs now require flexibility, so insisting on fixed hours is futile.
+                    There needs to be a bit of give-and take. If overtime cannot be paid, perhaps a
+                    'flexi' system could be used. Working longer than normal hours one week, could
+                    mean working less than normal hours the next week.</p>
+                <p>Don't know what normal working hours are? Thirty-seven and a half hours a
+                    week. That's five days with half an hour lunch each day. It's why unions were
+                    first organised. It's why May days and Labour days are celebrated. It's what our
+                    forefathers fought for during the Industrial Revolution. And it's what unpaid
+                    overtime threatens to unravel.</p>
+                <p>To say that the 40-hour week has no relevance in today's environment is to
+                    say that justice has no relevance in today's environment. Sadly, many of us
+                    acquiesce to that view.</p>
+                <p>Tuesday, 18 November 2003</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script language="javascript">
+    function CalculateDilution(ExpectedHours, ActualHours) {
+        return (ExpectedHours / ActualHours)
+    }
+
+    function DisplayDilution() {
+        document.RateDilution.Dilution.value = CalculateDilution(document.RateDilution.ExpectedHours.value, document.RateDilution.ActualHours.value).toFixed(2);
+    }
+
+    function DisplayDilutedSalary() {
+        document.RateDilution.DilutedSalary.value = (document.RateDilution.Dilution.value * document.RateDilution.Salary.value).toFixed(2);
+    }
+
+    function Display() {
+        DisplayDilution();
+        DisplayDilutedSalary();
+    }
+
+</Script>
+
+</html>
