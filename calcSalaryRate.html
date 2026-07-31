@@ -56,76 +56,80 @@
 
         <form action='' name="salaryrate" class="pure-form">
           <fieldset>
-            <table border="1">
-              <tr>
-                <th>Salary (annual)</th>
-                <th>Leave (annual)</th>
-                <th>Benefits (annual)</th>
-                <th>Contract</th>
-              </tr>
-              <tr>
-                <td class="required"><label for="basesalary">Base Salary $</label>
-                  <input type="number" name="basesalary" size="10" value="45000" required>
-                </td>
-                <td class="required"><label for="sickleave">Sick Leave days</label>
-                  <input type="number" name="sickleave" size="4" value="10" required>
-                </td>
-                <td class="required"><label for="leaveloading">Leave Loading</label>
-                  <input type="number" name="leaveloading" size="4" value="17.5" required> %
-                </td>
-                <td class="calculated"><label for="leaveloadingval">Leave Loading Value $</label>
-                  <input type="number" name="leaveloadingval" size="10" readonly>
-                </td>
-              </tr>
-              <tr>
-                <td class="required"><label for="workdays">Workdays/shifts per week</label>
-                  <input type="number" name="workdays" size="4" value="5" required>
-                </td>
-                <td class="required"><label for="recleave">Recreation Leave days</label>
-                  <input type="number" name="recleave" size="4" value="20" required>
-                </td>
-                <td class="required"><label for="superannuation">Superannuation (employer contribution)</label>
-                  <input type="number" name="superannuation" size="4" value="10.5" required>%
-                </td>
-                <td class="calculated"><label for="superannuationval">Superannuation Value $</label>
-                  <input type="number" name="superannuationval" size="10" readonly>
-                </td>
-              </tr>
-              <tr>
-                <td>52 weeks/year</td>
-                <td class="required"><label for="longserviceleave">Long Service Leave days</label>
-                  <input type="number" name="longserviceleave" size="4" value="5" required>
-                </td>
-                <td class="required"><label for="benefits">Other (Car / Medical / Dental) $</label>
-                  <input type="number" name="benefits" size="10" value="0" required>
-                </td>
-                <td class="calculated"><label for="benefitstotal">Total Benefits $</label>
-                  <input type="number" name="benefitstotal" size="10" readonly>
-                </td>
-              </tr>
-              <tr>
-                <td class="required"><label for="hoursperday"> hours per day/shift</label><input type="number"
-                    name="hoursperday" size="4" value="7.5" required></td>
-                <td class="required"><label for="publicholidays">Public Holidays</label>
-                  <input type="number" name="publicholidays" size="4" value="11" required>
-                </td>
-                <td><input type="button" class="pure-button pure-button-primary" value="Salary to Rate &rarr;"
-                    name="salarytorate" onClick="salarytorate_display()"></td>
-                <td class="optional"><label for="rate">Contract Rate per hour $</label>
-                  <input type="number" name="rate" size="5" value="33">
-                </td>
-              </tr>
-              <tr>
-                <td><input type="reset" class="pure-button" value="Reset" name="Reset"></td>
-                <td class="calculated"><label for="totalleave">Total Leave days</label>
-                  <input type="number" name="totalleave" size="4" readonly>
-                </td>
-                <td class="calculated"><label for="netsalary">Gross Salary $</label>
-                  <input type="number" name="netsalary" size="10" readonly>
-                </td>
-                <td><input type="button" class="pure-button pure-button-primary" value="&larr; Rate to Salary"
-                    name="ratetosalary" onClick="ratetosalary_display()"></td>
-              </tr>
+            <table class="pure-table pure-table-bordered">
+              <thead>
+                <tr>
+                  <th>Salary (annual)</th>
+                  <th>Leave (days, annual)</th>
+                  <th>Benefits (annual)</th>
+                  <th>Contract</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="required"><label for="basesalary" title="Excluding superannuation and other benefits.">Base Salary $
+                    <input type="number" class="required" name="basesalary" value="90000" required></label>
+                  </td>
+                  <td class="required"><label for="sickleave">Sick Leave
+                    <input type="number" class="required" name="sickleave" value="10" required></label>
+                  </td>
+                  <td class="required"><label for="leaveloading">Leave Loading
+                    <input type="number" class="required" name="leaveloading" value="17.5" required>%</label>
+                  </td>
+                  <td class="calculated"><label for="leaveloadingval" title="Dollar-value of leave loading (calculated)">Leave Loading Value $
+                    <input type="number" name="leaveloadingval" readonly></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="required"><label for="workdays">Workdays/shifts per week
+                    <input type="number" class="required" name="workdays" value="5" required></label>
+                  </td>
+                  <td class="required"><label for="recleave">Recreation Leave
+                    <input type="number" class="required" name="recleave" value="20" required></label>
+                  </td>
+                  <td class="required"><label for="superannuation">Superannuation Guarantee
+                    <input type="number" class="required" name="superannuation" value="12" required>%</label>
+                  </td>
+                  <td class="calculated"><label for="superannuationval" title="Dollar-value of superannuation (calculated)">Superannuation Value $
+                    <input type="number" class="calculated" name="superannuationval" readonly></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>52 weeks/year</td>
+                  <td class="required"><label for="longserviceleave">Long Service Leave
+                    <input type="number" class="required" name="longserviceleave" value="5" required></label>
+                  </td>
+                  <td class="required"><label for="benefits">Other (Car/Allowances) $
+                    <input type="number" class="required" name="benefits" value="0" required></label>
+                  </td>
+                  <td class="calculated"><label for="benefitstotal" title="Superannuation + benefits (calculated)">Total Benefits $
+                    <input type="number" class="calculated" name="benefitstotal" readonly></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="required"><label for="hoursperday"> hours per day/shift<input type="number"
+                      class="required" name="hoursperday" value="7.5" required></label></td>
+                  <td class="required"><label for="publicholidays">Public Holidays
+                    <input type="number" class="required" name="publicholidays" value="11" required></label>
+                  </td>
+                  <td><input type="button" class="pure-button pure-button-primary" value="Salary to Rate &rarr;"
+                      name="salarytorate" onClick="salarytorate_display()"></td>
+                  <td class="optional"><label for="rate">Contract Rate per hour $
+                    <input type="number" class="optional" name="rate" value="63.56"></label>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="reset" class="pure-button" value="Reset" name="Reset"></td>
+                  <td class="calculated"><label for="totalleave" title="Total leave (calculated)">Total Leave
+                    <input type="number" class="calculated" name="totalleave" readonly></label>
+                  </td>
+                  <td class="calculated"><label for="netsalary" title="Total pre-tax salary (calculated)">Gross Salary $
+                    <input type="number" class="calculated" name="netsalary" readonly></label>
+                  </td>
+                  <td><input type="button" class="pure-button pure-button-primary" value="&larr; Rate to Salary"
+                      name="ratetosalary" onClick="ratetosalary_display()"></td>
+                </tr>
+              </tbody>
             </table>
           </fieldset>
         </form>
@@ -146,18 +150,14 @@
           <li>If you stuff up, press '<b>Reset</b>'.</li>
         </ol>
         <h3>Legend</h3>
-        <table border="1">
+        <table class="pure-table pure-table-bordered">
           <tr>
-            <td width=15% class="required"></td>
-            <td>Required (Salary conditions)</td>
+            <td width=15%><div class="required">Required</div></td>
+            <td>Salary conditions</td>
           </tr>
           <tr>
-            <td width=15% class="optional">&nbsp;</td>
-            <td>Optional (Contract conditions)</td>
-          </tr>
-          <tr>
-            <td width=15% class="calculated">&nbsp;</td>
-            <td>Leave blank (Calculated fields)</td>
+            <td width=15%><div class="optional">Optional</div></td>
+            <td>Contract conditions</td>
           </tr>
         </table>
         <hr>
